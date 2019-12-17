@@ -86,7 +86,7 @@ Hjemmesiden kommer næsten udelukkende til at foregå som self-service og med au
 Dybere i forløbet, vil vi gerne stille en supportafdeling til rådighed som en form for “personal assistance” i forhold til problemer eller spørgsmål til vores service. 
 
 \subsection{Customer Segments}
-Med vores service rammer vi klart et meget segmenteret marked, som dog er samlet under en niche, nemlig et ønske om at leve sundere og opnå en eller anden form for fitness eller træningsmål. Segmenteringen sker i form af de forskellige mål brugere kan have med deres træning og kost. Det er vigtig at vi markedsføre servicen som rettet mod fitness interesserede som vores samlede målgruppe. Efter det lykkedes at fange en bruger, vil de derefter opdage at servicen kan målrettes endnu mere specifikt.
+Med vores service rammer vi klart et meget segmenteret marked, som dog er samlet under en niche, nemlig et ønske om at leve sundere og opnå en eller anden form for fitness eller træningsmål. Segmenteringen sker i form af de forskellige mål brugere kan have med deres træning og kost. Det er vigtig at vi markedsføre servicen som rettet mod fitness interesserede som vores samlede målgruppe.  Ifølge Facilitetsdatabasen.dk er der i Danmark pt. over 1.400 Fitness centre i danmark, med et estimeret antal medlemmer på mere end en million mennesker. Det vil sige vi vil kunne ramme et stort segment af mennesker i Danmark af fitness interesserede. Selvom der så kan være mange forskellige grunde til at gå i et fitness center, og derfor mange forskellige mål for træning, vil brugere opdage at servicen kan målrettes specifikt til deres behov.
 
 \subsection{Channels}
 For at ramme vores målgrupper og skabe aktivitet på siden, vil vi benytte os af forskellige reklame services på internettet som udgangspunkt. Det er vigtig at vi sørge for at optimere siden så meget som muligt i forhold til at være synlige gennem søgemaskiner som google. Samtidig må vi som udgangspunkt overveje en udgift fra start til brug på en reklamekampagne på sociale medier og gennem googles reklameservice.
@@ -110,13 +110,15 @@ For at gøre de ovennævnte “activities” mulige skal vi som sagt bruge opskr
 \subsection{Cost Structure}
 Vores forretning kommer som udgangspunkt til at være Cost-driven. Servicen skal forblive så billig som mulig og det er derfor vigtigt at vi holde omkostninger på et minimum. Når der er tale om en hjemmeside, skal vi fra start kunne vedligeholde webstedets domæne af branding årsager, samt betale udgifter til serverhosting af vores side. For overhovedet at tiltrække kunder skal vi også betale for diverse markedsførings services beskrevet tidligere. 
 
-Inden servicen rigtig kommer i luften, er det sandsynligt at vores team, som på nuværende tidspunkt kun består af os fire i gruppen, er villige og har mulighed for at udvikle hjemmesiden gratis. Derved slipper vi for en ekstra udgift i form af at betale for udviklingen hvilket jo er hele pointen i et developer start-up af denne facon. 
+Inden servicen rigtig kommer i luften, er det sandsynligt at vores team, som på nuværende tidspunkt kun består af os fire i gruppen, er villige og har mulighed for at udvikle hjemmesiden gratis. Derved slipper vi for en ekstra udgift i form af at betale for udviklingen hvilket jo er hele pointen i et developer start-up af denne facon. Der estimeres at vi nok skulle bruge en 50 mandetimer på udviklingen.
 
 Som udgangspunkt regner vi med at de nødvendige opstartsomkostninger kommer ud af egen lomme eller ved hjælp at et lån, indtil servicen er populær nok til at tiltrække eventuelle investorer eller vi bliver opkøbt. 
 
 
 \newpage
 \section{Implementation}
+
+Al koden kan findes på: https://github.com/karvus/dm565-sip/tree/master/src, og består af 163 linjer kode samt en masse data. Vi har fokuseret på at få data behandlingsdelen af projektet op at køre som et POC.
 
 \subsection{Scraping}
 For at kunne fylde opskrift sektionen lidt bedre ud, inden der kommer
@@ -180,10 +182,10 @@ der indeholder vores data.
 I øjeblikket fodres dataene fra dk-kogeboken.dk ind i en SQL-database,
 og dataerne fra Frida er konverteret til CSV-format, og importeres i
 en \textit{pandas} \texttt{DataFrame}.  Herfrfa har vi mulighed til at
-lenke disse data op mod hinanden.
+lænke disse data op mod hinanden.
 
-Det er interessant at scrape, eller på anden måde få tilgang til, fler
-opskriftsdatabaser.  Der er tilfælder hvor vi selv vil være nødt til
+Det er interessant at scrape, eller på anden måde få tilgang til, flere
+opskriftsdatabaser.  Der er tilfælde hvor vi selv vil være nødt til
 at bestemme næringsværdier for måltider.
 
 Med udgangspunkt i Frida-databasen, kan dette bestemmes, givet at vi
@@ -193,6 +195,8 @@ Frida-databasen.  En mulig måde at opnå dette på, er ved
 igennem et antal opskrifter, hvor ingredienser i opskrifterne
 betragtes som kandidater, og ingredienser i Frida-databasen betragtes
 som klasser.  Med tiden vil classifieren selv kunne håndtere ny input.
+
+Alt dette backend skal så selvfølgelig sammenkobles til en hjemmeside i sidste ende, hvor brugere kan tilgå vores service.
 
 \end{document}
 

@@ -1,9 +1,56 @@
-\documentclass{article}
+\documentclass[a4paper,]{article}
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[mode=buildnew]{standalone}
+\usepackage{tikz}
+\usepackage[showframe=false]{geometry}
+\usepackage{fancyhdr,lastpage,setspace,graphicx,amsmath,amsfonts}
+        \pagestyle{fancy}
+	\setlength{\headheight}{30pt}
+	\allowdisplaybreaks{}
+%\usepackage[section]{placeins}
+\usepackage[
+	tracking=true,
+	kerning=true,
+	spacing=true
+	]{microtype}
+\usepackage[
+	hidelinks,
+	unicode=true
+	]{hyperref}
+	\urlstyle{sf}
+\usepackage[nodayofweek]{datetime}
+\usepackage{libertine}
+\usepackage[scaled=0.89]{inconsolata}
 
-\title{dm565 Innovation project reportt}
-\author{Thomas Stenhaug - tsten16 \\ Jacob Egebjerg - jaege16 \\ Kasper Kirkegaard Mikkelsen - kamik17 \\Marcus Møller - moell17 }
-\date{\today}
+\newdate{due}{12}{12}{2019}
+
+\begin{document}
+
+\lhead{M. Møller, J. Egerberg, T. Stenhaug, K. K. Mikkelsen}
+\chead{}
+\rhead{DM571\\\yyyymmdddate\displaydate{due}}
+\lfoot{SDU\includegraphics[height=1.8ex]{SDUinline}}
+\cfoot{}
+\rfoot{Side \thepage{} af~\pageref{LastPage}}
+
+\title{DM565\\Software Innovation Project}
+\date{\displaydate{due}}
+\author{
+  Jacob Egerberg (\texttt{jaege16} / 210597) \\
+  Kasper Kirkegaard Mikkelsen (\texttt{kamik17} / 281189) \\
+  Marcus Møller (\texttt{moell17} / 251296) \\
+  Thomas Stenhaug (\texttt{tsten16} / 220573)}
+
+\maketitle
+
+  \vspace*{\fill}
+  \begin{center}
+    \includegraphics[width=1.05\textwidth]{SDUlogo.pdf}
+  \end{center}
+
+\thispagestyle{empty}
+\newpage
 
 \begin{document}
 
@@ -71,6 +118,66 @@ Som udgangspunkt regner vi med at de nødvendige opstartsomkostninger kommer ud 
 \newpage
 \section{Implementation}
 
+\subsection{Scraping}
+For at kunne fylde opskrift sektionen lidt bedre ud, inden der kommer
+brugere til platformen, har vi valgt at scrape en masse opskrifter fra
+dk-kogebogen.dk. Alle ingredienser der anvendes, kan også findes i en
+database fra \url{http://frida.fooddata.dk}. Der er som udgangspunkt 3 endpoints vi
+scraper fra.
+\begin{verbatim}
+  https://www.dk-kogebogen.dk/opskrifter/retter-3.php?id=%d&limit=%d&order=karakter-antal
+\end{verbatim}
+er URL’en til en kategori med oversigt over opskrifter. Her vælger vi
+en kategori ID der indeholder spændende opskrifter og bruger limit til
+at vælge hvilken side (hvis der er flere sider af opskrifter).
+Det næste er URL’en til opskriften som findes på kategori siderne
+\begin{verbatim}
+https://www.dk-kogebogen.dk/opskrifter/%d/
+\end{verbatim}
+Her findes
+information om ingredienser og instruktioner, samt kommentarer og
+vurderinger fra brugere af hjemmesiden.
+Den sidste URL er
+\begin{verbatim}
+https://www.dk-kogebogen.dk/opskrifter/naeringsberegning.php?id=%d
+\end{verbatim}
+hvor vi finder information om næringsindhold.
 
+Det er ikke alle kategorier på siden der har spændende opskrifter, og det er ikke alle opskrifter, der har næringsindhold inkluderet, så vi har valgt kun at scrape fra nogle af kategorierne. 
+
+Vi har scrapet ved at anvende \textit{BeautifulSoup4} til
+\textit{Python 3}. Vi har valgt at scrape fra denne side på baggrund
+af, hvor let den kan scrapes, da alle siderne følger samme format. Vi
+kigger først igennem en kategori, og identificere alle næringsindhold
+ikoner, så vi kan finde de opskrifter der har den information. 2
+elementer nede kan vi så finde linket til opskriften, og vi kan bruge
+et simpelt regulært udtryk til at finde ID’en. Dette gøres for alle
+vores kategorierer. En separat metode håndterer herefter selve
+scrapingen af opskriften, hvis ikke den allerede er gemt.
+
+Scraping af opskriften foregår henover 2 \texttt{GET} requests, da
+næringsindhold findes på en separat side. I den første request til
+selve opskriften findes titel, instruktioner og ingredienser. De
+første 2 er lette at finde, da det bare er første instans af
+henholdsvis \texttt{H1} og \texttt{P} tags. Ingredienserne findes ved
+at finde den første tabel med en \texttt{cellpadding} attribut
+defineret. Hver ingrediens findes i en tabelrække og er splittet ind i
+3 celler, der indeholder mængde, enhed og navn på ingrediensen.
+
+Den sidste del af scrapingen, er at finde næringsindholdet. At finde
+den totale energi kræver at man søger igennem hele dokumentet og
+finder det via et regulært udtryk, da det ikke findes under noget
+bestemt tag. Den resterende information kan findes meget let, da de
+har unikke itemprop attributter. Informationen samles i et dictionary
+som let kan eksporteres til JSON data.
+
+Det store arbejde i vores scraping har primært ligget i, at gennemse
+kilde koden på hver af siderne, og identificere elementerne og mønstre
+der indeholder vores data.
 
 \end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

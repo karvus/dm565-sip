@@ -44,17 +44,18 @@
 
 \maketitle
 
-  \vspace*{\fill}
-  \begin{center}
-    \includegraphics[width=1.05\textwidth]{SDUlogo.pdf}
-  \end{center}
+\vspace*{\fill}
+\begin{center}
+  \includegraphics[width=1.05\textwidth]{SDUlogo.pdf}
+\end{center}
 
 \thispagestyle{empty}
 \newpage
 
-\begin{document}
+\tableofcontents
+\newpage
 
-\maketitle
+\pagenumbering{arabic}
 
 \section{Idé beskrivelsen}
 Ambrosia er en hjemmeside til planlægning af din uge med sunde, billige måltider og fitness. Efter oprettelse som bruger, vil du bedes indtaste diverse informationer om dig, din hverdag og din kropstype. Hvor høj du er, hvor meget du vejer, hvor aktiv er du i hverdagen, hvor meget vil du tabe dig eller hvor meget vil du tage på? Er du ude på at blive muskuløs, forbedre din kondition eller bare leve sundere? Derefter vil hjemmesiden generere et forslag til din uge, med måltider, træninger og indkøb på baggrund af dine mål. 
@@ -103,7 +104,6 @@ Vores partner indledningsvis vil kun være i forbindelse med reklamer til både 
 \subsection{Key Activities}
 Den vigtigste aktivitet til at udføre og vedligeholde vores value proposition er indsamling af alt den nødvendige information og gøre det let tilgængeligt for brugere. Dette vil foregå gennem web scraping af opskrift hjemmesider og gennem et åbent datasæt hentet fra Frida Food Data hvor næringsindhold af de fleste danske madvare er tilgængelige. Disse samles til en database som vi bruger til den ovenfor beskrevne funktionalitet. 
 
-\newpage
 \subsection{Key Resources}
 For at gøre de ovennævnte “activities” mulige skal vi som sagt bruge opskriftsinformation fra dk-kogebogen.dk som vi gennem ugeplanen gør tilgængelige til brugere efter at have filtreret på de kriterier som passer i brugerens mad-/træningsplan. Vi synkronisere disse opskrifter og deres ingredienser med alt madvare informationen tilgængelig i datasættet fra Frida Food Data frida.fooddata.dk.
 
@@ -174,6 +174,25 @@ som let kan eksporteres til JSON data.
 Det store arbejde i vores scraping har primært ligget i, at gennemse
 kilde koden på hver af siderne, og identificere elementerne og mønstre
 der indeholder vores data.
+
+\subsection{Fremdtidige retninger}
+
+I øjeblikket fodres dataene fra dk-kogeboken.dk ind i en SQL-database,
+og dataerne fra Frida er konverteret til CSV-format, og importeres i
+en \textit{pandas} \texttt{DataFrame}.  Herfrfa har vi mulighed til at
+lenke disse data op mod hinanden.
+
+Det er interessant at scrape, eller på anden måde få tilgang til, fler
+opskriftsdatabaser.  Der er tilfælder hvor vi selv vil være nødt til
+at bestemme næringsværdier for måltider.
+
+Med udgangspunkt i Frida-databasen, kan dette bestemmes, givet at vi
+kan matche ingredienserne fra forskellige kilder, med dataerne i
+Frida-databasen.  En mulig måde at opnå dette på, er ved
+\textit{Bayesian Classification}.  Her vil vi bruge manpower til at gå
+igennem et antal opskrifter, hvor ingredienser i opskrifterne
+betragtes som kandidater, og ingredienser i Frida-databasen betragtes
+som klasser.  Med tiden vil classifieren selv kunne håndtere ny input.
 
 \end{document}
 
